@@ -39,3 +39,22 @@ export const Heading = styled.h2`
   display: contents;
   text-decoration: none;
 `;
+
+export const ListItemContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+export const ButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  button {
+    width: 80px;
+    height: 40px;
+  }
+`;

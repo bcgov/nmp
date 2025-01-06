@@ -2,14 +2,20 @@
  * @summary The Field List page for the application
  */
 import { useState } from 'react';
-import { CardHeader, Banner } from './fieldList.styles';
-import { Card, InputField, Dropdown } from '../../components/common';
+// import { useNavigate } from 'react-router-dom';
+import { CardHeader, Banner, ListItemContainer, ButtonWrapper } from './fieldList.styles';
+import { Card, InputField, Dropdown, Button } from '../../components/common';
 import { TabOptions, TabContentDisplay } from '../../components/common/Tabs/Tabs';
 import Modal from '../../components/common/Modal/Modal';
+// import useAppService from '@/services/app/useAppService';
+// import NMPFile from '@/types/NMPFile';
+// import defaultNMPFile from '@/constants/DefaultNMPFile';
 
 export default function FieldList() {
+  // const { state, setNMPFile } = useAppService();
+  // const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isFieldModalVisible, setIsFieldModalVisible] = useState(false);
   const [fields, setFields] = useState<
     { fieldName: string; area: string; manure: string; comment: string }[]
   >([]);
@@ -19,6 +25,7 @@ export default function FieldList() {
     manure: '',
     comment: '',
   });
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
   const manureOptions = [
     { value: 1, label: 'Manure 1' },
@@ -31,14 +38,31 @@ export default function FieldList() {
   };
 
   const handleSubmit = () => {
-    setFields([...fields, formData]);
+    if (editIndex !== null) {
+      const updatedFields = fields.map((field, index) => (index === editIndex ? formData : field));
+      setFields(updatedFields);
+      setEditIndex(null);
+    } else {
+      setFields([...fields, formData]);
+    }
     setFormData({
       fieldName: '',
       area: '',
       manure: '',
       comment: '',
     });
-    setIsModalVisible(false);
+    setIsFieldModalVisible(false);
+  };
+
+  const handleEdit = (index: number) => {
+    setFormData(fields[index]);
+    setEditIndex(index);
+    setIsFieldModalVisible(true);
+  };
+
+  const handleDelete = (index: number) => {
+    const updatedFields = fields.filter((_, i) => i !== index);
+    setFields(updatedFields);
   };
 
   const tabs = [
@@ -47,20 +71,47 @@ export default function FieldList() {
       label: 'Field List',
       content: (
         <div>
-          {fields.map((field) => (
-            <div key={field.fieldName}>
+          {fields.map((field, index) => (
+            <ListItemContainer key={field.fieldName}>
               <h3>{field.fieldName}</h3>
               <p>Area: {field.area}</p>
               <p>Manure: {field.manure}</p>
               <p>Comment: {field.comment}</p>
-            </div>
+              <button
+                type="button"
+                onClick={() => handleEdit(index)}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(index)}
+              >
+                Delete
+              </button>
+            </ListItemContainer>
           ))}
+          <button
+            type="button"
+            onClick={() => setIsFieldModalVisible(true)}
+          >
+            Add Field
+          </button>
         </div>
       ),
     },
     { id: 'tab-2', label: 'Tab 2', content: <div>Tab 2 Content</div> },
     { id: 'tab-3', label: 'Tab 3', content: <div>Tab 3 Content</div> },
   ];
+
+  const handleNext = () => {
+    // let nmpFile: NMPFile;
+    // if (state.nmpFile) nmpFile = JSON.parse(state.nmpFile);
+    // else nmpFile = defaultNMPFile;
+    // nmpFile.farmDetails = { ...nmpFile.farmDetails, ...formData };
+    // setNMPFile(JSON.stringify(nmpFile));
+    // navigate('/field-list');
+  };
 
   return (
     <>
@@ -81,17 +132,23 @@ export default function FieldList() {
           tabs={tabs}
           activeTab={activeTab}
         />
-        <button
-          type="button"
-          onClick={() => setIsModalVisible(true)}
-        >
-          Add Field
-        </button>
+        <ButtonWrapper>
+          <Button
+            text="Next"
+            size="sm"
+            handleClick={() => {
+              handleNext();
+            }}
+            aria-label="Next"
+            variant="primary"
+            disabled={false}
+          />
+        </ButtonWrapper>
       </Card>
       <Modal
-        isVisible={isModalVisible}
-        title="Add Field"
-        onClose={() => setIsModalVisible(false)}
+        isVisible={isFieldModalVisible}
+        title={editIndex !== null ? 'Edit Field' : 'Add Field'}
+        onClose={() => setIsFieldModalVisible(false)}
         footer={
           <button
             type="button"

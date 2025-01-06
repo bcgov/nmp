@@ -140,7 +140,7 @@ export default function FarmInformation() {
       <ButtonWrapper>
         <Button
           text="Next"
-          size="lg"
+          size="sm"
           handleClick={() => {
             handleSubmit();
           }}

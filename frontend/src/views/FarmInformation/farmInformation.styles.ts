@@ -70,7 +70,7 @@ export const ButtonWrapper = styled.div`
   bottom: 16px;
   right: 16px;
   button {
-    width: 120px;
-    height: 60px;
+    width: 80px;
+    height: 40px;
   }
 `;
