@@ -1,31 +1,46 @@
 /**
  * @summary The Field List page for the application
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { CardHeader, Banner, ListItemContainer, ButtonWrapper } from './fieldList.styles';
 import { Card, InputField, Dropdown, Button } from '../../components/common';
 import { TabOptions, TabContentDisplay } from '../../components/common/Tabs/Tabs';
 import Modal from '../../components/common/Modal/Modal';
-// import useAppService from '@/services/app/useAppService';
-// import NMPFile from '@/types/NMPFile';
-// import defaultNMPFile from '@/constants/DefaultNMPFile';
+import useAppService from '@/services/app/useAppService';
+import NMPFile from '@/types/NMPFile';
+import defaultNMPFile from '@/constants/DefaultNMPFile';
 
 export default function FieldList() {
-  // const { state, setNMPFile } = useAppService();
+  const { state, setNMPFile } = useAppService();
   // const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(0);
   const [isFieldModalVisible, setIsFieldModalVisible] = useState(false);
   const [fields, setFields] = useState<
-    { fieldName: string; area: string; manure: string; comment: string }[]
+    {
+      FieldName: string;
+      Area: string;
+      PreviousYearManureApplicationFrequency: string;
+      Comment: string;
+    }[]
   >([]);
   const [formData, setFormData] = useState({
-    fieldName: '',
-    area: '',
-    manure: '',
-    comment: '',
+    FieldName: '',
+    Area: '',
+    PreviousYearManureApplicationFrequency: '',
+    Comment: '',
   });
   const [editIndex, setEditIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (state.nmpFile) {
+      const data = state.nmpFile;
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setFields(parsedData.years[0].Fields);
+      }
+    }
+  }, [state.nmpFile]);
 
   const manureOptions = [
     { value: 1, label: 'Manure 1' },
@@ -46,12 +61,13 @@ export default function FieldList() {
       setFields([...fields, formData]);
     }
     setFormData({
-      fieldName: '',
-      area: '',
-      manure: '',
-      comment: '',
+      FieldName: '',
+      Area: '',
+      PreviousYearManureApplicationFrequency: '',
+      Comment: '',
     });
     setIsFieldModalVisible(false);
+    console.log(fields);
   };
 
   const handleEdit = (index: number) => {
@@ -72,11 +88,11 @@ export default function FieldList() {
       content: (
         <div>
           {fields.map((field, index) => (
-            <ListItemContainer key={field.fieldName}>
-              <h3>{field.fieldName}</h3>
-              <p>Area: {field.area}</p>
-              <p>Manure: {field.manure}</p>
-              <p>Comment: {field.comment}</p>
+            <ListItemContainer key={field.FieldName}>
+              <h3>{field.FieldName}</h3>
+              <p>Area: {field.Area}</p>
+              <p>Manure: {field.PreviousYearManureApplicationFrequency}</p>
+              <p>Comment: {field.Comment}</p>
               <button
                 type="button"
                 onClick={() => handleEdit(index)}
@@ -105,11 +121,21 @@ export default function FieldList() {
   ];
 
   const handleNext = () => {
-    // let nmpFile: NMPFile;
-    // if (state.nmpFile) nmpFile = JSON.parse(state.nmpFile);
-    // else nmpFile = defaultNMPFile;
-    // nmpFile.farmDetails = { ...nmpFile.farmDetails, ...formData };
-    // setNMPFile(JSON.stringify(nmpFile));
+    let nmpFile: NMPFile;
+
+    if (state.nmpFile) nmpFile = JSON.parse(state.nmpFile);
+    else nmpFile = defaultNMPFile;
+
+    if (nmpFile.years && nmpFile.years.length > 0) {
+      nmpFile.years[0].Fields = fields.map((field) => ({
+        FieldName: field.FieldName,
+        Area: parseFloat(field.Area),
+        PreviousYearManureApplicationFrequency: field.PreviousYearManureApplicationFrequency,
+        Comment: field.Comment,
+      }));
+    }
+
+    setNMPFile(JSON.stringify(nmpFile));
     // navigate('/field-list');
   };
 
@@ -161,29 +187,29 @@ export default function FieldList() {
         <InputField
           label="Field Name"
           type="text"
-          name="fieldName"
-          value={formData.fieldName}
+          name="FieldName"
+          value={formData.FieldName}
           onChange={handleChange}
         />
         <InputField
           label="Area"
           type="text"
-          name="area"
-          value={formData.area}
+          name="Area"
+          value={formData.Area}
           onChange={handleChange}
         />
         <Dropdown
           label="Manure"
-          name="manure"
-          value={formData.manure}
+          name="PreviousYearManureApplicationFrequency"
+          value={formData.PreviousYearManureApplicationFrequency}
           options={manureOptions}
           onChange={handleChange}
         />
         <InputField
           label="Comment"
           type="text"
-          name="comment"
-          value={formData.comment}
+          name="Comment"
+          value={formData.Comment}
           onChange={handleChange}
         />
       </Modal>
