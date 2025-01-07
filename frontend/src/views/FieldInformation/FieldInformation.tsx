@@ -45,7 +45,7 @@ export default function FieldInformation() {
         />
       ),
     },
-    { id: 'tab-3', label: 'Tab 3', content: <div>Tab 3 Content</div> },
+    { id: 'crops', label: 'Crops', content: <div>Crops Tab</div> },
   ];
 
   const handleNext = () => {
