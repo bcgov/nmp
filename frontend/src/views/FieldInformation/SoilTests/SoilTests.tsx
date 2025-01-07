@@ -122,7 +122,7 @@ export default function SoilTests({ fields, setFields }: FieldListProps) {
         >
           <InputField
             label="Sample Month"
-            type="text"
+            type="month"
             name="sampleDate"
             value={soilTestData.sampleDate}
             onChange={handleChange}
