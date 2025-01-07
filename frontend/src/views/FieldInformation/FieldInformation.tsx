@@ -2,14 +2,14 @@
  * @summary The Field Information page for the application
  */
 import { useState } from 'react';
-import FieldList from './FieldList/FieldList';
-import SoilTests from './SoilTests/SoilTests';
-import { CardHeader, Banner, ButtonWrapper } from './fieldInformation.styles';
-import { Card, Button } from '../../components/common';
-import { TabOptions, TabContentDisplay } from '../../components/common/Tabs/Tabs';
 import useAppService from '@/services/app/useAppService';
 import NMPFile from '@/types/NMPFile';
 import defaultNMPFile from '@/constants/DefaultNMPFile';
+import FieldList from './FieldList/FieldList';
+import SoilTests from './SoilTests/SoilTests';
+import { Card, Button } from '../../components/common';
+import { TabOptions, TabContentDisplay } from '../../components/common/Tabs/Tabs';
+import { CardHeader, Banner, ButtonWrapper } from './fieldInformation.styles';
 
 export default function FieldInformation() {
   const { state, setNMPFile } = useAppService();

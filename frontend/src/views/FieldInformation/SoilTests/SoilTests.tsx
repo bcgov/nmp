@@ -1,3 +1,6 @@
+/**
+ * @summary This is the Soil Tests Tab
+ */
 import { useState } from 'react';
 import { Dropdown } from '../../../components/common';
 import { InfoBox } from './soilTests.styles';
