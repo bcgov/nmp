@@ -12,6 +12,7 @@ interface Field {
   Area: string;
   PreviousYearManureApplicationFrequency: string;
   Comment: string;
+  SoilTest: object;
 }
 
 interface FieldListProps {
@@ -29,6 +30,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     Area: '',
     PreviousYearManureApplicationFrequency: '',
     Comment: '',
+    SoilTest: {},
   });
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
@@ -62,6 +64,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
       Area: '',
       PreviousYearManureApplicationFrequency: '',
       Comment: '',
+      SoilTest: {},
     });
     setIsFieldModalVisible(false);
   };
@@ -86,7 +89,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     <div>
       {fields.map((field, index) => (
         <ListItemContainer key={field.FieldName}>
-          <h3>{field.FieldName}</h3>
+          <p>Field Name: {field.FieldName}</p>
           <p>Area: {field.Area}</p>
           <p>Manure: {field.PreviousYearManureApplicationFrequency}</p>
           <p>Comment: {field.Comment}</p>

@@ -3,6 +3,15 @@
  */
 import styled from '@emotion/styled';
 
+export const ListItemContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
 export const InfoBox = styled.div`
   background-color: rgba(200, 200, 200, 0.3);
   padding: 10px;

@@ -20,6 +20,7 @@ export default function FieldInformation() {
       Area: string;
       PreviousYearManureApplicationFrequency: string;
       Comment: string;
+      SoilTest: object;
     }[]
   >([]);
 
@@ -37,7 +38,12 @@ export default function FieldInformation() {
     {
       id: 'soil-test',
       label: 'Soil Tests',
-      content: <SoilTests />,
+      content: (
+        <SoilTests
+          fields={fields}
+          setFields={setFields}
+        />
+      ),
     },
     { id: 'tab-3', label: 'Tab 3', content: <div>Tab 3 Content</div> },
   ];
