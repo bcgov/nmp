@@ -1,10 +1,11 @@
 /**
  * @summary This Field list Tab
  */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dropdown, InputField } from '../../../components/common';
 import Modal from '@/components/common/Modal/Modal';
 import { ListItemContainer } from './fieldList.styles';
+import useAppService from '@/services/app/useAppService';
 
 interface Field {
   FieldName: string;
@@ -19,6 +20,8 @@ interface FieldListProps {
 }
 
 export default function FieldList({ fields, setFields }: FieldListProps) {
+  const { state } = useAppService();
+
   const [isFieldModalVisible, setIsFieldModalVisible] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [fieldformData, setFieldFormData] = useState({
@@ -67,6 +70,17 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     { value: 1, label: 'Manure 1' },
     { value: 2, label: 'Manure 2' },
   ];
+
+  useEffect(() => {
+    if (state.nmpFile) {
+      const data = state.nmpFile;
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setFields(parsedData.years[0].Fields);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
