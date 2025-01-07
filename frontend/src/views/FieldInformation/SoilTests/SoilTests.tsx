@@ -3,8 +3,6 @@
  */
 import { useState } from 'react';
 // import useAppService from '@/services/app/useAppService';
-// import NMPFile from '@/types/NMPFile';
-// import defaultNMPFile from '@/constants/DefaultNMPFile';
 import { Dropdown, Modal, InputField } from '../../../components/common';
 import { InfoBox, ListItemContainer } from './soilTests.styles';
 
@@ -44,6 +42,13 @@ export default function SoilTests({ fields, setFields }: FieldListProps) {
     setIsModalVisible(true);
   };
 
+  const handleDeleteSoilTest = (index: number) => {
+    const updatedFields = fields.map((field, i) =>
+      i === index ? { ...field, SoilTest: {} } : field,
+    );
+    setFields(updatedFields);
+  };
+
   const handleSubmit = () => {
     if (currentFieldIndex !== null) {
       const updatedFields = fields.map((field, index) =>
@@ -74,12 +79,29 @@ export default function SoilTests({ fields, setFields }: FieldListProps) {
               <p>P (ppm): {field.SoilTest.ValP}</p>
               <p>K (ppm): {field.SoilTest.valK}</p>
               <p>pH: {field.SoilTest.valPH}</p>
-              <button
-                type="button"
-                onClick={() => handleEditSoilTest(index)}
-              >
-                Add Soil Test Results
-              </button>
+              {Object.keys(field.SoilTest).length === 0 ? (
+                <button
+                  type="button"
+                  onClick={() => handleEditSoilTest(index)}
+                >
+                  Add Soil Test Results
+                </button>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => handleEditSoilTest(index)}
+                  >
+                    Edit Soil Test
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteSoilTest(index)}
+                  >
+                    Delete Soil Test
+                  </button>
+                </>
+              )}
             </ListItemContainer>
           ))}
         </div>
@@ -99,49 +121,35 @@ export default function SoilTests({ fields, setFields }: FieldListProps) {
           }
         >
           <InputField
-            label="Converted Kelowna K"
-            type="text"
-            name="ConvertedKelownaK"
-            value={soilTestData.ConvertedKelownaK}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Converted Kelowna P"
-            type="text"
-            name="ConvertedKelownaP"
-            value={soilTestData.ConvertedKelownaP}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Val P"
-            type="text"
-            name="ValP"
-            value={soilTestData.ValP}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Sample Date"
+            label="Sample Month"
             type="text"
             name="sampleDate"
             value={soilTestData.sampleDate}
             onChange={handleChange}
           />
           <InputField
-            label="Val K"
-            type="text"
-            name="valK"
-            value={soilTestData.valK}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Val NO3H"
+            label="NO3-N (ppm), nitrate-nitrogen"
             type="text"
             name="valNO3H"
             value={soilTestData.valNO3H}
             onChange={handleChange}
           />
           <InputField
-            label="Val PH"
+            label="P (ppm), phosphorus"
+            type="text"
+            name="ValP"
+            value={soilTestData.ValP}
+            onChange={handleChange}
+          />
+          <InputField
+            label="K (ppm), potassium"
+            type="text"
+            name="valK"
+            value={soilTestData.valK}
+            onChange={handleChange}
+          />
+          <InputField
+            label="pH"
             type="text"
             name="valPH"
             value={soilTestData.valPH}

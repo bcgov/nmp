@@ -28,7 +28,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
   const [fieldformData, setFieldFormData] = useState({
     FieldName: '',
     Area: '',
-    PreviousYearManureApplicationFrequency: '',
+    PreviousYearManureApplicationFrequency: '0',
     Comment: '',
     SoilTest: {},
   });
@@ -62,7 +62,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     setFieldFormData({
       FieldName: '',
       Area: '',
-      PreviousYearManureApplicationFrequency: '',
+      PreviousYearManureApplicationFrequency: '0',
       Comment: '',
       SoilTest: {},
     });
@@ -70,8 +70,10 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
   };
 
   const manureOptions = [
-    { value: 1, label: 'Manure 1' },
-    { value: 2, label: 'Manure 2' },
+    { value: 0, label: 'Select' },
+    { value: 1, label: 'No Manure in the last 2 years' },
+    { value: 2, label: 'Manure applied in 1 of the 2 years ' },
+    { value: 3, label: 'Manure applied in each of the 2 years ' },
   ];
 
   useEffect(() => {
@@ -91,7 +93,6 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
         <ListItemContainer key={field.FieldName}>
           <p>Field Name: {field.FieldName}</p>
           <p>Area: {field.Area}</p>
-          <p>Manure: {field.PreviousYearManureApplicationFrequency}</p>
           <p>Comment: {field.Comment}</p>
           <button
             type="button"
@@ -141,7 +142,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
           onChange={handleChange}
         />
         <Dropdown
-          label="Manure"
+          label="Manure application in previous years"
           name="PreviousYearManureApplicationFrequency"
           value={fieldformData.PreviousYearManureApplicationFrequency}
           options={manureOptions}
