@@ -23,4 +23,5 @@ export const Tab = styled.button<{ active: boolean }>`
 export const TabContent = styled.div`
   padding: 20px;
   background-color: #fff;
+  width: 100%;
 `;
