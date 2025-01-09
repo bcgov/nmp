@@ -1,11 +1,10 @@
 /**
  * @summary This is the Field list Tab
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dropdown, InputField } from '../../../components/common';
 import Modal from '@/components/common/Modal/Modal';
 import { ListItemContainer } from './fieldList.styles';
-import useAppService from '@/services/app/useAppService';
 
 interface Field {
   FieldName: string;
@@ -13,6 +12,7 @@ interface Field {
   PreviousYearManureApplicationFrequency: string;
   Comment: string;
   SoilTest: object;
+  Crops: object[];
 }
 
 interface FieldListProps {
@@ -21,9 +21,7 @@ interface FieldListProps {
 }
 
 export default function FieldList({ fields, setFields }: FieldListProps) {
-  const { state } = useAppService();
-
-  const [isFieldModalVisible, setIsFieldModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [fieldformData, setFieldFormData] = useState({
     FieldName: '',
@@ -31,6 +29,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     PreviousYearManureApplicationFrequency: '0',
     Comment: '',
     SoilTest: {},
+    Crops: [{}],
   });
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
@@ -41,7 +40,7 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
   const handleEdit = (index: number) => {
     setFieldFormData(fields[index]);
     setEditIndex(index);
-    setIsFieldModalVisible(true);
+    setIsModalVisible(true);
   };
 
   const handleDelete = (index: number) => {
@@ -65,8 +64,9 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
       PreviousYearManureApplicationFrequency: '0',
       Comment: '',
       SoilTest: {},
+      Crops: [{}],
     });
-    setIsFieldModalVisible(false);
+    setIsModalVisible(false);
   };
 
   const manureOptions = [
@@ -75,17 +75,6 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
     { value: 2, label: 'Manure applied in 1 of the 2 years ' },
     { value: 3, label: 'Manure applied in each of the 2 years ' },
   ];
-
-  useEffect(() => {
-    if (state.nmpFile) {
-      const data = state.nmpFile;
-      if (data) {
-        const parsedData = JSON.parse(data);
-        setFields(parsedData.years[0].Fields);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div>
@@ -110,14 +99,14 @@ export default function FieldList({ fields, setFields }: FieldListProps) {
       ))}
       <button
         type="button"
-        onClick={() => setIsFieldModalVisible(true)}
+        onClick={() => setIsModalVisible(true)}
       >
         Add Field
       </button>
       <Modal
-        isVisible={isFieldModalVisible}
+        isVisible={isModalVisible}
         title={editIndex !== null ? 'Edit Field' : 'Add Field'}
-        onClose={() => setIsFieldModalVisible(false)}
+        onClose={() => setIsModalVisible(false)}
         footer={
           <button
             type="button"

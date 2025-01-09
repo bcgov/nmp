@@ -2,7 +2,6 @@
  * @summary This is the Soil Tests Tab
  */
 import { useState } from 'react';
-// import useAppService from '@/services/app/useAppService';
 import { Dropdown, Modal, InputField } from '../../../components/common';
 import { InfoBox, ListItemContainer } from './soilTests.styles';
 
@@ -12,7 +11,6 @@ interface FieldListProps {
 }
 
 export default function SoilTests({ fields, setFields }: FieldListProps) {
-  // const { state } = useAppService();
   const [soilTestData, setSoilTestData] = useState({
     SoilTest: '1',
     ConvertedKelownaK: '2',

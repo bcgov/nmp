@@ -1,12 +1,13 @@
 /**
  * @summary The Field Information page for the application
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAppService from '@/services/app/useAppService';
 import NMPFile from '@/types/NMPFile';
 import defaultNMPFile from '@/constants/DefaultNMPFile';
 import FieldList from './FieldList/FieldList';
 import SoilTests from './SoilTests/SoilTests';
+import Crops from './Crops/Crops';
 import { Card, Button } from '../../components/common';
 import { TabOptions, TabContentDisplay } from '../../components/common/Tabs/Tabs';
 import { CardHeader, Banner, ButtonWrapper } from './fieldInformation.styles';
@@ -21,6 +22,7 @@ export default function FieldInformation() {
       PreviousYearManureApplicationFrequency: string;
       Comment: string;
       SoilTest: object;
+      Crops: any[];
     }[]
   >([]);
 
@@ -45,7 +47,16 @@ export default function FieldInformation() {
         />
       ),
     },
-    { id: 'crops', label: 'Crops', content: <div>Crops Tab</div> },
+    {
+      id: 'crops',
+      label: 'Crops',
+      content: (
+        <Crops
+          fields={fields}
+          setFields={setFields}
+        />
+      ),
+    },
   ];
 
   const handleNext = () => {
@@ -60,12 +71,24 @@ export default function FieldInformation() {
         Area: parseFloat(field.Area),
         PreviousYearManureApplicationFrequency: field.PreviousYearManureApplicationFrequency,
         Comment: field.Comment,
+        SoilTest: field.SoilTest,
       }));
     }
 
     setNMPFile(JSON.stringify(nmpFile));
     if (activeTab <= tabs.length) setActiveTab(activeTab + 1);
   };
+
+  useEffect(() => {
+    if (state.nmpFile) {
+      const data = state.nmpFile;
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setFields(parsedData.years[0].Fields);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Card
