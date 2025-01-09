@@ -28,7 +28,7 @@ export default function SoilTests({ fields, setFields }: FieldListProps) {
 
   const soilTestOptions = [
     { value: 1, label: 'No Soil Test from within the past 3 years' },
-    { value: 2, label: 'Other Lab (Bicarbonate and Amm Acetate' },
+    { value: 2, label: 'Other Lab (Bicarbonate and Amm Acetate)' },
   ];
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
