@@ -121,6 +121,12 @@ export default function Crops({ fields, setFields }: FieldListProps) {
                   type="button"
                   onClick={() => handleEditSoilTest(index)}
                 >
+                  Add Crop
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleEditSoilTest(index)}
+                >
                   Edit Soil Test
                 </button>
                 <button

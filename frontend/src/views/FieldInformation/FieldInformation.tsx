@@ -22,7 +22,7 @@ export default function FieldInformation() {
       PreviousYearManureApplicationFrequency: string;
       Comment: string;
       SoilTest: object;
-      Crops: any[];
+      Crops: object[];
     }[]
   >([]);
 
@@ -72,6 +72,7 @@ export default function FieldInformation() {
         PreviousYearManureApplicationFrequency: field.PreviousYearManureApplicationFrequency,
         Comment: field.Comment,
         SoilTest: field.SoilTest,
+        Crops: field.Crops,
       }));
     }
 
